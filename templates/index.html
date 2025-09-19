@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>파이썬 계산기</title>
+    <style>
+      :root {
+        font-family: "Noto Sans KR", system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        color: #1a202c;
+        background-color: #f7fafc;
+        line-height: 1.5;
+      }
+
+      body {
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+      }
+
+      .calculator {
+        background: #ffffff;
+        box-shadow: 0 10px 25px rgba(15, 23, 42, 0.12);
+        border-radius: 16px;
+        padding: 32px;
+        width: min(420px, 90vw);
+      }
+
+      h1 {
+        font-size: 1.75rem;
+        margin-top: 0;
+        margin-bottom: 1.5rem;
+        text-align: center;
+      }
+
+      form {
+        display: grid;
+        gap: 1rem;
+      }
+
+      label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 0.35rem;
+      }
+
+      input,
+      select,
+      button {
+        width: 100%;
+        border-radius: 8px;
+        border: 1px solid #cbd5f5;
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        box-sizing: border-box;
+      }
+
+      input:focus,
+      select:focus,
+      button:focus {
+        outline: 3px solid rgba(59, 130, 246, 0.4);
+        border-color: #3b82f6;
+      }
+
+      button {
+        background: linear-gradient(135deg, #6366f1, #3b82f6);
+        border: none;
+        color: #ffffff;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+      }
+
+      button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 18px rgba(79, 70, 229, 0.3);
+      }
+
+      .result,
+      .error {
+        border-radius: 8px;
+        padding: 0.85rem 1rem;
+        font-weight: 600;
+      }
+
+      .result {
+        background-color: #ecfdf5;
+        color: #047857;
+        border: 1px solid #a7f3d0;
+      }
+
+      .error {
+        background-color: #fef2f2;
+        color: #b91c1c;
+        border: 1px solid #fecaca;
+      }
+
+      footer {
+        margin-top: 1.5rem;
+        font-size: 0.875rem;
+        text-align: center;
+        color: #64748b;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="calculator">
+      <h1>파이썬 계산기</h1>
+      <form method="post">
+        <div>
+          <label for="operand1">첫 번째 숫자</label>
+          <input
+            id="operand1"
+            type="number"
+            step="any"
+            name="operand1"
+            value="{{ operand1 }}"
+            required
+          />
+        </div>
+
+        <div>
+          <label for="operation">연산 선택</label>
+          <select id="operation" name="operation">
+            {% for key, (label, _) in operations.items() %}
+            <option value="{{ key }}" {% if key == selected_operation %}selected{% endif %}>
+              {{ label }}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div>
+          <label for="operand2">두 번째 숫자</label>
+          <input
+            id="operand2"
+            type="number"
+            step="any"
+            name="operand2"
+            value="{{ operand2 }}"
+            required
+          />
+        </div>
+
+        <button type="submit">계산하기</button>
+      </form>
+
+      {% if result %}
+      <p class="result">{{ result }}</p>
+      {% endif %}
+
+      {% if error %}
+      <p class="error">{{ error }}</p>
+      {% endif %}
+
+      <footer>Flask와 Decimal을 사용하여 정확한 계산을 제공합니다.</footer>
+    </main>
+  </body>
+</html>
